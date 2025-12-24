@@ -20,8 +20,7 @@ $e1 = new Etudiant(
     "0610708182"
 );
 
-echo $f1;
-echo '<br/>';
-echo '<br/>';
-echo '<br/>';
-echo $e1;
+echo 'vous avez un ' . $f1->getRole() . PHP_EOL;
+
+
+echo $e1->getRole() . PHP_EOL;

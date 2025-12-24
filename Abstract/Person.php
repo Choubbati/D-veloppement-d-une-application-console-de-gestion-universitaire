@@ -60,4 +60,5 @@ abstract class Personne
     }
 
     
+    abstract public function getRole():string;
 }

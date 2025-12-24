@@ -48,3 +48,19 @@ CREATE TABLE formateur_course (
     FOREIGN KEY (formateur_id) REFERENCES formateurs(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 )ENGINE=INNODB; 
+
+CREATE TABLE courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    department_id INT NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES departments(id)
+    formateur_id INT NOT NULL,
+    FOREIGN KEY (formateur_id) REFERENCES formateur(id)
+)ENGINE=INNODB;
+
+CREATE TABLE deparetement (
+    id int primary KEY AUTO_INCRIMENT,
+    firstname VARCHAR(200),
+    lastname VARCHAR(200)
+
+)ENGINE=INNODB;

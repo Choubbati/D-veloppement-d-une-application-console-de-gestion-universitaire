@@ -2,6 +2,7 @@
 require 'Entity\Department.php';
 require 'Repository\DepartmentRepository.php';
 
+$connexion = new Connextion();
 
 do{
 echo "===** LOGIN **===\n";

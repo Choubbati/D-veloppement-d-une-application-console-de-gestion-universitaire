@@ -1,19 +1,25 @@
 <?php
+
+
 abstract class Personne
 {
     protected int $id;
     protected string $firstname;
     protected string $lastname;
     protected string $email;
-    protected string $phone;
+    protected string $password;
+    protected Role $role;
 
-    public function __construct(int $id,string $firstname,string $lastname,string $email,string $phone)
+    public function __construct(int $id,string $firstname,string $lastname,string $email,string $password,Role $role)
     {
         $this->id = $id;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
-        $this->phone = $phone;
+        $this->password = $password;
+        $this->role=$role;
+        
+      
     }
 
     public function getId():int{
@@ -49,16 +55,9 @@ abstract class Personne
             
         }
         $this->email=$email;
-    }
-
-    public function getPhone():string{
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone):void{
-        $this->phone=$phone;
-    }
-
-    
-    abstract public function getRole():string;
+    }    
+    public function getRole(): Role
+        {
+            return $this->role;
+        }
 }

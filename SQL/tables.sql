@@ -32,7 +32,7 @@ CREATE TABLE courses(
     titre VARCHAR(150) NOT NULL,
     department_id INT,
     FOREIGN KEY (department_id) REFERENCES departments(id)
-);
+)ENGINE=INNODB;
 
 CREATE TABLE etudiant_course (
     etudiant_id INT,

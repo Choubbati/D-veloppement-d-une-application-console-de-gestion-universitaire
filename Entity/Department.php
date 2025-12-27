@@ -2,37 +2,31 @@
 
 class Department
 {
-    private string $firstname;
-    private string $lastname;
+    private ?int $id;
+    private string $name;
 
-    public function __construct(string $firstname, string $lastname)
+
+    public function __construct(?int $id=null,string $name)
     {
-        // $this->id = $id;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
+        $this->id = $id;
+        $this->name = $name;
     }
-    function getFirstname()
+    function getname()
     {
-        return $this->firstname;
+        return $this->name;
     }
-    function getLastname()
+   
+    function setname(string $name)
     {
-        return $this->lastname;
+        return $this->name = $name;
     }
-    function setFirstname(string $firstname)
+   
+    function setId(int $id)
     {
-        return $this->firstname = $firstname;
+        return $this->id = $id;
     }
-    function setLastname(string $lastname)
+    function getId()
     {
-        return $this->firstname = $lastname;
+        return $this->id;
     }
-    // function setId(int $id)
-    // {
-    //     return $this->id = $id;
-    // }
-    // function getId()
-    // {
-    //     return $this->id;
-    // }
 }

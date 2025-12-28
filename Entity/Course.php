@@ -6,11 +6,13 @@ class Course
     private ?int $id;
     private string $titre;
     private int $departmentId;
+    private int $formateurId;
 
-    public function __construct(string $titre, int $departmentId,?int $id=null)
+    public function __construct(string $titre, int $departmentId,int $formateurId,?int $id=null)
     {
         $this->titre = $titre;
         $this->departmentId = $departmentId;
+        $this->formateurId = $formateurId;
         $this->id = $id;
     }
     public function getId()
@@ -23,6 +25,10 @@ class Course
         return $this->titre;
     }
 
+    public function getFormateurId()
+    {
+        return $this->formateurId;
+    }
     public function getDepartmentId()
     {
         return $this->departmentId;
@@ -37,5 +43,8 @@ class Course
     {
         $this->departmentId = $departmentId;
     }
-     
+     public function setFormateurId(int $formateurId)
+    {
+        $this->formateurId = $formateurId;
+    }
 }

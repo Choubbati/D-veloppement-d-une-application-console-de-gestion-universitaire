@@ -12,26 +12,36 @@ CREATE TABLE departments(
     name VARCHAR(100) NOT NULL
 )ENGINE=INNODB; 
 
-CREATE TABLE etudiants(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT UNIQUE,
+CREATE TABLE etudiants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(100),
+    lastname VARCHAR(100),
+    email VARCHAR(150),
+    password VARCHAR(255),
+    role VARCHAR(50),
+    niveau VARCHAR(50)
 	matricule VARCHAR(100) NOT NULL ,
-    departement_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    cours_id INT,
+    FOREIGN KEY (cours_id) REFERENCES courses(id)
 )ENGINE=INNODB; 
 
 CREATE TABLE formateurs(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT UNIQUE,
-    specialite VARCHAR(100),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    password VARCHAR(250) NOT NULL,
+    role ENUM('ADMIN','FORMATEUR','ETUDIANT'),
+    specialite VARCHAR(100)
 )ENGINE=INNODB; 
 
 CREATE TABLE courses(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(150) NOT NULL,
-    department_id INT,
-    FOREIGN KEY (department_id) REFERENCES departments(id)
+    department_id INT null,
+    formateur_id INT null,
+    FOREIGN KEY (department_id) REFERENCES departments(id),
+    FOREIGN KEY (formateur_id) REFERENCES formateurs(id)
 )ENGINE=INNODB;
 
 CREATE TABLE etudiant_course (

@@ -3,21 +3,21 @@
 
 abstract class Personne
 {
-    protected int $id;
     protected string $firstname;
     protected string $lastname;
     protected string $email;
     protected string $password;
     protected Role $role;
+    protected ?int $id;
 
-    public function __construct(int $id,string $firstname,string $lastname,string $email,string $password,Role $role)
+    public function __construct(string $firstname,string $lastname,string $email,string $password,Role $role, ?int $id=null)
     {
-        $this->id = $id;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
         $this->password = $password;
         $this->role=$role;
+        $this->id = $id;
         
       
     }

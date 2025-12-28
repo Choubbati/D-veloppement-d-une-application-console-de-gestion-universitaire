@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../database/connextion.php';
 require_once __DIR__ . '/../Entity/Course.php';
 
-class CourseRepository
+class CourseRepository implements CrudInterface
 {
     private PDO $pdo;
 
@@ -12,22 +12,23 @@ class CourseRepository
         $this->pdo = $pdo;
     }
 
-    public function AddCours(Course $course): bool
+    public function Add(Course $course): bool
     {
-        $sql = "INSERT INTO courses (titre, department_id)VALUES(?,?)";
+        $sql = "INSERT INTO courses (titre, department_id,formateur_id)VALUES(?,?,?)";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$course->gettitre(),$course->getDepartmentId()]);
+        return $stmt->execute([$course->gettitre(),$course->getDepartmentId(),$course->getFormateurId()]);
+        
     }
 
-    public function updateCours(string $titre,int $id_department,int $id): bool
+    public function update(int $id,Course $coure): bool
     {
-        $sql = "UPDATE courses  SET titre = ? , department_id = ? WHERE id = ?";
+        $sql = "UPDATE courses  SET titre = ? , department_id = ? ,formateur_id = ? WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([$titre,$id_department,$id]);
+        return $stmt->execute([$coure->gettitre(),$coure->getDepartmentId(),$coure->getFormateurId(),$id]);
     }
 
-    public function deleteCourse(int $id): bool
+    public function delete(int $id): bool
     {
         $sql = "DELETE FROM courses WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -35,7 +36,7 @@ class CourseRepository
     }
 
 
-    public function selectAllCoures(): array
+    public function selectAll(): array
     {
         $sql = "SELECT * FROM courses";
         $stmt = $this->pdo->query($sql);

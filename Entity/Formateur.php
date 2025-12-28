@@ -6,14 +6,14 @@
 
         private string $specialiste;
 
-        public function __construct(int $id, string $firstname, string $lastname, string $email, string $password, string $specialiste){
-            return parent::__construct($id, $firstname, $lastname, $email, $password,Role::FORMATEUR);
+        public function __construct( string $firstname, string $lastname, string $email, string $password, Role $role, string $specialiste, ?int $id=null){
+            parent::__construct($firstname, $lastname, $email, $password,$role,$id);
             $this->specialiste = $specialiste;
         }
 
         public function getSpecialite(): string{
             return $this->specialiste;
-        }
+        } 
 
         public function setSpecialite(string $specialiste): void{
             $this->specialiste = $specialiste;

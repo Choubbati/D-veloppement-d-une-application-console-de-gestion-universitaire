@@ -6,10 +6,11 @@ class Department
     private string $name;
 
 
-    public function __construct(?int $id=null,string $name)
+    public function __construct(string $name,?int $id=null)
     {
-        $this->id = $id;
-        $this->name = $name;
+         $this->name = $name;
+         $this->id = $id;
+       
     }
     function getname()
     {

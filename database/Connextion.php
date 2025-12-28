@@ -22,7 +22,7 @@ class Connextion{
             try {
                 $dns = "mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
                 $this->pdo = new PDO($dns, $this->root, $this->password);
-                echo 'success';
+                
             } catch (PDOException $e) {
                 die('Erreur dans database' . $e->getMessage());
             }

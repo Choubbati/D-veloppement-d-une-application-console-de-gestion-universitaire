@@ -60,4 +60,13 @@ abstract class Personne
         {
             return $this->role;
         }
+        
+        function getPassword():string{
+            return $this->password;
+        }
+
+        function setPassword($password):void{
+            $this->password = $password;
+        }
+
 }

@@ -365,7 +365,7 @@ function Etudiant($coursRepository, $etudiantRepository)
     }
 }
 function Formateur($formateurRepository)
-{- 
+{ 
     while (true) {
         echo "\n      === Gestion des formateurs   ===\n";
         echo "1- ajouter un formateur.\n";

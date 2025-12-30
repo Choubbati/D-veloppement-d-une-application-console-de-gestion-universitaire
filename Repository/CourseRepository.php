@@ -12,20 +12,21 @@ class CourseRepository implements CrudInterface
         $this->pdo = $pdo;
     }
 
-    public function Add(Course $course): bool
+    public function Add(Course $course): int
     {
-        $sql = "INSERT INTO courses (titre, department_id,formateur_id)VALUES(?,?,?)";
+        $sql = "INSERT INTO courses (titre, department_id)VALUES(?,?)";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$course->gettitre(),$course->getDepartmentId(),$course->getFormateurId()]);
+        $stmt->execute([$course->gettitre(),$course->getDepartmentId()]);
+        return (int) $this->pdo->lastInsertId();
         
     }
 
     public function update(int $id,Course $coure): bool
     {
-        $sql = "UPDATE courses  SET titre = ? , department_id = ? ,formateur_id = ? WHERE id = ?";
+        $sql = "UPDATE courses  SET titre = ? , department_id = ?  WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([$coure->gettitre(),$coure->getDepartmentId(),$coure->getFormateurId(),$id]);
+        return $stmt->execute([$coure->gettitre(),$coure->getDepartmentId(),$id]);
     }
 
     public function delete(int $id): bool
@@ -39,9 +40,10 @@ class CourseRepository implements CrudInterface
     public function selectAll(): array
     {
         $sql = "SELECT * FROM courses";
-        $stmt = $this->pdo->query($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
         return $courses;
     }
+    
 }

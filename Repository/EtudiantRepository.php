@@ -16,21 +16,21 @@ class EtudiantRepository
     public function Add(Etudiant $etd): bool
     {
 
-        $sql = "INSERT INTO etudiants (firstname, lastname, email, password, role, niveau, CNE, cours_id)
-                VALUES (:fn, :ln, :email, :pwd, :role, :niveau ,:cne , :cid)";
+        $sql = "INSERT INTO etudiants (firstname, lastname, email, password, role, niveau, CNE)
+                VALUES (:fn, :ln, :email, :pwd, :role, :niveau ,:cne )";
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([
+        $stmt->execute([
             'fn'     => $etd->getFirstname(),
             'ln'     => $etd->getLastname(),
             'email'  => $etd->getEmail(),
             'pwd'    => $etd->getPassword(),
             'role'   => $etd->getRole()->value,
             'niveau' => $etd->getNiveau(),
-            'cne' => $etd->getCNE(),
-            'cid' => $etd->getCoursId()
+            'cne' => $etd->getCNE()
         ]);
+        return (int) $this->pdo->lastInsertId();
     }
     public function update(int $id, Etudiant $etd): bool
     {
@@ -40,8 +40,7 @@ class EtudiantRepository
                     lastname = :ln,
                     email = :email,
                     niveau = :niveau,
-                    CNE = :cne,
-                    cours_id = :cid
+                    CNE = :cne
                 WHERE id = :id";
 
         $stmt = $this->pdo->prepare($sql);
@@ -52,7 +51,6 @@ class EtudiantRepository
             'email' => $etd->getEmail(),
             'niveau' => $etd->getNiveau(),
             'cne' => $etd->getCNE(),
-            'cid' => $etd->getCoursId(),
             'id'     => $id
         ]);
     }

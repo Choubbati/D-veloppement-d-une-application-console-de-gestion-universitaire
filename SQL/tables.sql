@@ -19,10 +19,8 @@ CREATE TABLE etudiants (
     email VARCHAR(150),
     password VARCHAR(255),
     role VARCHAR(50),
-    niveau VARCHAR(50)
-	matricule VARCHAR(100) NOT NULL ,
-    cours_id INT,
-    FOREIGN KEY (cours_id) REFERENCES courses(id)
+    niveau VARCHAR(50),
+	CNE VARCHAR(100) NOT NULL 
 )ENGINE=INNODB; 
 
 CREATE TABLE formateurs(
@@ -39,9 +37,7 @@ CREATE TABLE courses(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(150) NOT NULL,
     department_id INT null,
-    formateur_id INT null,
-    FOREIGN KEY (department_id) REFERENCES departments(id),
-    FOREIGN KEY (formateur_id) REFERENCES formateurs(id)
+    FOREIGN KEY (department_id) REFERENCES departments(id)
 )ENGINE=INNODB;
 
 CREATE TABLE etudiant_course (
@@ -70,7 +66,6 @@ CREATE TABLE courses (
 
 CREATE TABLE deparetement (
     id int primary KEY AUTO_INCRIMENT,
-    firstname VARCHAR(200),
-    lastname VARCHAR(200)
+    name VARCHAR(200)
 
 )ENGINE=INNODB;

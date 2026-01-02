@@ -22,7 +22,7 @@ class FormateurRepository
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([$f->getFirstName(),$f->getLastName(),$f->getEmail(),$f->getPassword(),$f->getRole()->value,$f->getSpecialite()]);
+        return $stmt->execute([$f->getFirstName(), $f->getLastName(), $f->getEmail(), $f->getPassword(), $f->getRole()->value, $f->getSpecialite()]);
     }
 
 
@@ -46,19 +46,31 @@ class FormateurRepository
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([         'firstname'  => $formateur->getFirstname(),
+        return $stmt->execute([
+            'firstname'  => $formateur->getFirstname(),
             'lastname'   => $formateur->getLastname(),
             'email'      => $formateur->getEmail(),
             'specialite' => $formateur->getSpecialite(),
             'id'         => $id
         ]);
     }
-    public function selectAll():array
+    public function selectAll(): array
     {
-        $sql="SELECT * FROM formateurs ";
-        $stmt=$this->pdo->prepare($sql);
+        $sql = "SELECT * FROM formateurs ";
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function selectById($id): ?Formateur
+    {
+        $sql = "SELECT * FROM formateurs WHERE id=?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$row){
+            return null;
+        }else{
+            return new Formateur($row['$firstname'],$row['$lastname'],$row['$email'],$row['$password'],$row['$role'],$row['$specialite'],$row['$id']);
+        }
+    }
 }
-

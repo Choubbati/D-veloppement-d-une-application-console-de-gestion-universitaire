@@ -11,14 +11,30 @@ class DepartmentRepository implements CrudInterface
     {
         $this->pdo = $pdo;
     }
-    public function selectALL():array{
-        $sql="SELECT * From departments ";
-        $stmt=$this->pdo->prepare($sql);
+    public function selectALL(): array
+    {
+        $sql = "SELECT * From departments ";
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function selectById(int $id): ?Department
+    {
+        $sql = "SELECT * FROM departments WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
 
-    public function add(Department $department):bool
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return null;
+        }
+
+        return new Department($row['name'], $row['id']);
+    }
+
+
+    public function add(Department $department): bool
     {
         $sql = "INSERT INTO departments (name) VALUES (?)";
         $stmt = $this->pdo->prepare($sql);

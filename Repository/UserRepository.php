@@ -66,7 +66,7 @@ class User_Repository
 
     public function selectAll(): array
     {
-        $sql = "DELETE FROM users WHERE id=:id";
+        $sql = "SELECT * FROM users";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

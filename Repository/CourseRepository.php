@@ -14,19 +14,18 @@ class CourseRepository implements CrudInterface
 
     public function Add(Course $course): int
     {
-        $sql = "INSERT INTO courses (titre, department_id)VALUES(?,?)";
+        $sql = "INSERT INTO courses (titre, department)VALUES(?,?)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$course->gettitre(),$course->getDepartmentId()]);
+        $stmt->execute([$course->gettitre(), $course->getDepartment()->getId()]);
         return (int) $this->pdo->lastInsertId();
-        
     }
 
-    public function update(int $id,Course $coure): bool
+    public function update(int $id, Course $coure): bool
     {
-        $sql = "UPDATE courses  SET titre = ? , department_id = ?  WHERE id = ?";
+        $sql = "UPDATE courses  SET titre = ? , department = ?  WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([$coure->gettitre(),$coure->getDepartmentId(),$id]);
+        return $stmt->execute([$coure->gettitre(), $coure->getDepartment()->getId(), $id]);
     }
 
     public function delete(int $id): bool
@@ -42,8 +41,19 @@ class CourseRepository implements CrudInterface
         $sql = "SELECT * FROM courses";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $courses;
     }
-    
+    public function selectAllInfos(): array
+    {
+        $sql = "
+        SELECT * 
+        FROM courses c
+        INNER JOIN formateur_course fc ON c.id = fc.course_id
+        INNER JOIN formateurs f ON fc.formateur_id = f.id ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $courses;
+    }
 }

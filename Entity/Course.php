@@ -1,16 +1,16 @@
 <?php
-
+require_once __DIR__ . '/Department.php';
 
 class Course
 {
     private ?int $id;
     private string $titre;
-    private int $departmentId;
+    private Department $department;
 
-    public function __construct(string $titre, int $departmentId,?int $id=null)
+    public function __construct(string $titre, Department $department,?int $id=null)
     {
         $this->titre = $titre;
-        $this->departmentId = $departmentId;
+        $this->department = $department;
         $this->id = $id;
     }
     public function getId()
@@ -22,9 +22,9 @@ class Course
     {
         return $this->titre;
     }
-    public function getDepartmentId()
+    public function getDepartment()
     {
-        return $this->departmentId;
+        return $this->department;
     }
    
     public function settitre(string $titre)
@@ -32,9 +32,9 @@ class Course
         $this->titre = $titre;
     }
 
-    public function setDepartmentId(int $departmentId)
+    public function setDepartmentId(Department $department)
     {
-        $this->departmentId = $departmentId;
+        $this->department = $department;
     }
      
 }

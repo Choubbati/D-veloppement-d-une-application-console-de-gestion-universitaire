@@ -37,11 +37,11 @@ do {
 
     //     $array = $loginService->checkData($email);
     //     $element = $array[0];
-    //     if (empty($element)) {
-    //         echo "!!!!! verifier votre email est incorrect   !!!!!\n";
+    //      (empty($element)) {
+    //         echo "!!!!! verier votre email est incorrect   !!!!!\n";
     //     }
     // } while (empty($element));
-    // if ($password !== $element['password']) {
+    //  ($password !== $element['password']) {
     //     echo "!!!!!    votre password est  incorrect  !!!!\n";
 
     // echo "\n";
@@ -49,7 +49,7 @@ do {
 } while (!$login);
 
 while (true) {
-    if ($login["role"] === "ADMIN") {
+     if($login["role"] === "ADMIN") {
         echo "\n----------------- Bienvenue ----------------------";
         echo "\n     ==** gestion des universités **==\n";
         echo "     1- gestion des departements.\n";
@@ -67,6 +67,7 @@ while (true) {
         echo "    2- consulter les cours suivis par un étudian.\n";
         echo "    3- voire votre  formateur\n";
         echo "    4- voire votre  departement\n";
+        echo "    6- Quitter\n";
         echo "\n====>> : ";
 
         $etudChoix = trim(fgets(STDIN));
@@ -126,13 +127,19 @@ while (true) {
             var_dump($arrays);
             break;
         case 3:
+                echo " merci de pour votre choix \n";
+
             break;
         case 4:
+                echo " merci de pour votre choix \n";
+
             break;
         case 5:
+                echo " merci de pour votre choix \n";
+
             break;
         case 6:
-            exit;
+            return;
         default:
             echo "Aucun choix valide\n";
             break;
@@ -145,7 +152,7 @@ function Departement($departmentRepository)
         echo "\n   === Gestion des départements ===\n";
         echo "\n1- ajouter un deparetement.\n";
         echo "2- supprimer un deparetement.\n";
-        echo "3- modifier un  deparetement\n";
+        echo "3- modier un  deparetement\n";
         echo "4- Liste des deparetements\n";
         echo "5- quitter\n";
         echo "\n====>> : ";
@@ -159,10 +166,14 @@ function Departement($departmentRepository)
                 $nameDepartment = trim(fgets(STDIN));
 
                 $department = new Department($nameDepartment);
-
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $departmentRepository->add($department);
 
-                echo "Departement ajoute par succes\n\n";
+                echo "Departement ajoute par succes\n";
                 break;
             case 2:
                 echo "** suppimer un département : **\n";
@@ -173,6 +184,11 @@ function Departement($departmentRepository)
                 }
                 echo "\n Saisir Id du département va supprimer : ";
                 $departmentID = trim(fgets(STDIN));
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $departmentRepository->delete($departmentID);
                 echo "Departement supprimer par succes\n";
                 break;
@@ -187,13 +203,17 @@ function Departement($departmentRepository)
                 $DepartmentID = trim(fgets(STDIN));
                 echo "Entrer nouvelle nom du département : ";
                 $nameDepartment = trim(fgets(STDIN));
-
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $departmentRepository->update($nameDepartment, $DepartmentID);
 
                 echo "Departement modifier par succes\n";
                 break;
             case 4:
-                echo "\n-------------------------";
+                echo "\n-------------------------\n";
                 $departmentArray = $departmentRepository->selectAll();
                 foreach ($departmentArray as $dept) {
                     echo $dept['id'] . " | " . $dept['name'];
@@ -228,6 +248,8 @@ function Coures($coursRepository, $departmentRepository, $formateur_coure, $form
                 echo "\n - saisir tittre de coures : ";
                 $titre = trim(fgets(STDIN));
                 echo "\n =>> la listes des departement : \n";
+
+
                 $departmentArray = $departmentRepository->selectAll();
                 foreach ($departmentArray as $dept) {
                     echo "\n--------------------------------------------------------------\n";
@@ -235,8 +257,8 @@ function Coures($coursRepository, $departmentRepository, $formateur_coure, $form
                 }
                 echo "\n- Choisir Id de Departement de se cours : ";
                 $Iddepartement = trim(fgets(STDIN));
-
-
+                $department = $departmentRepository->selectById($Iddepartement); 
+                $coure = new Course($titre, $department);
                 echo "\n =>> la listes des formateurs : \n";
                 $formtArray = $formateurRepository->selectAll();
                 foreach ($formtArray as $formt) {
@@ -245,8 +267,11 @@ function Coures($coursRepository, $departmentRepository, $formateur_coure, $form
                 }
                 echo "\nChoisir Id de formateur de se cours : ";
                 $Idformateur = trim(fgets(STDIN));
-
-                $coure = new Course($titre, $Iddepartement);
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $idcour = $coursRepository->Add($coure);
 
                 $formateur_coure->add($Idformateur, $idcour);
@@ -259,14 +284,19 @@ function Coures($coursRepository, $departmentRepository, $formateur_coure, $form
                 $coursArray = $coursRepository->selectAll();
                 foreach ($coursArray as $coure) {
                     echo "\n--------------------------------------------------------------\n";
-                    echo $coure['id'] . " | Titre de cours :\"" . $coure['titre'] . "\" | Id de Departement :[" . $coure['department_id'] . "]";
+                    echo $coure['id'] . " | Titre de cours :\"" . $coure['titre'] . "\" | Id de Departement :[" . $coure['department'] . "]";
                     echo "\n";
                 }
                 echo "====>>";
                 $idcours = trim(fgets(STDIN));
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $coursRepository->delete($idcours);
 
-                echo "- Coures etait supprimer par succes\n";
+                echo "- Coures  supprimer par succes\n";
                 break;
             case 3:
                 echo "\- Modifier un cours :\n";
@@ -275,27 +305,38 @@ function Coures($coursRepository, $departmentRepository, $formateur_coure, $form
                 $coursArray = $coursRepository->selectAll();
                 foreach ($coursArray as $coure) {
                     echo "\n--------------------------------------------------------------\n";
-                    echo $coure['id'] . " | Titre de cours :\" " . $coure['titre'] . " \" | Id de Departement :[" . $coure['department_id'] . "]";
+                    echo $coure['id'] . " | Titre de cours :\" " . $coure['titre'] . " \" | Id de Departement :[" . $coure['department'] . "]";
                 }
-                echo "====>>";
+                echo "\n====>>";
                 $idcoursmdfier = trim(fgets(STDIN));
                 echo "-  Entrer nouvelle titre de cours :\n";
                 $titremdfier = trim(fgets(STDIN));
-                echo  "-  Saisir new ID de departement de cours :\n";
+                echo "\n";
+                $departmentArray = $departmentRepository->selectAll();
+                foreach ($departmentArray as $dept) {
+                    echo "\n--------------------------------------------------------------\n";
+                    echo $dept['id'] . " | " . $dept['name'];
+                }
+                echo  "\n-  Saisir new ID de departement de cours :\n";
                 $idDepmdfier = trim(fgets(STDIN));
-                $coure = new Course($titremdfier, $idDepmdfier);
-
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
+                $department = $departmentRepository->selectById($idDepmdfier); 
+                $coure = new Course($titremdfier, $department);
                 $coursRepository->update($idcoursmdfier, $coure);
 
                 echo " ==>> !! Coures etait modifier par succes !!!\n";
                 break;
             case 4:
-                $coursArray = $coursRepository->selectAll();
+                $coursArray = $coursRepository->selectAllInfos();
                 foreach ($coursArray as $coure) {
                     echo "\n--------------------------------------------------------------\n";
-                    echo $coure['id'] . " | Titre de cours :\"" . $coure['titre'] . "\" | Id de Departement :[" . $coure['department_id'] . "]";
+                    echo " Titre de cours :\"" . $coure['titre'] . "\" | le formateur :\"" . $coure['firstname']." ".$coure['lastname'] . "\""." et leur specialite :\"" . $coure['specialite'] ."\""." | Id de Departement :[" . $coure['department'] . "]";
                 }
-                echo "\n-------------------------\n";
+                    echo "\n-------------------------\n";
 
                 break;
             case 5:
@@ -343,7 +384,11 @@ function Etudiant($coursRepository, $etudiantRepository, $etudiant_coure, $userR
                 echo "\n-------------------------";
                 echo "\n=>>>> Choisir ID de cours assigner à l'etudiant : ";
                 $coursID = trim(fgets(STDIN));
-
+                echo "\n- Annuler [0] contenue [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $etudiant = new Etudiant($etdFirstname, $etdLastname, $etdEmail, $etdPassword, Role::ETUDIANT, $etdNiveau, $etdCNE);
                 $IdInserted = $etudiantRepository->Add($etudiant);
                 $etudiant_coure->add($IdInserted, $coursID);
@@ -404,6 +449,11 @@ function Etudiant($coursRepository, $etudiantRepository, $etudiant_coure, $userR
                 echo "\n-------------------------";
                 echo "\n=>>>> Entrer ID de cours assigner à l'etudiant : ";
                 $newCoursID = trim(fgets(STDIN));
+                echo "\n- Annuler [0] contenue [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $etudiant = new Etudiant($newEtdFirstname, $newEtdLastname, $newEtdEmail, $newEtdPassword, Role::ETUDIANT, $newEtdNiveau, $newEtdCNE, $newCoursID);
                 $etudiantRepository->update($EtdID, $etudiant);
                 echo "\n !! Etudiant modifier par succes !!\n";
@@ -451,6 +501,11 @@ function Formateur($formateurRepository, $userRepositiry)
                 echo "\n- Specialité de formateur : ";
                 $formatSpecialite = trim(fgets(STDIN));
                 $formateur = new Formateur($formatFirstname, $formatLastname, $formatEmail, $formatPassword, Role::FORMATEUR, $formatSpecialite);
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $formateurRepository->Add($formateur);
                 $userRepositiry->add($formatFirstname, $formatLastname,  $formatEmail,  $formatPassword, "FORMATEUR");
 
@@ -467,7 +522,11 @@ function Formateur($formateurRepository, $userRepositiry)
                 echo "\n--------------------------------------------------------------\n";
                 echo "\n====>> : ";
                 $formatID = trim(fgets(STDIN));
-
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $formateurRepository->delete($formatID);
                 echo "\n- formateur supprimer par succes\n";
                 break;
@@ -494,6 +553,11 @@ function Formateur($formateurRepository, $userRepositiry)
                 $newspecialite = trim(fgets(STDIN));
 
                 $formateur = new Formateur($newfirstname, $newlastname, $newemail, $newpassword, Role::FORMATEUR, $newspecialite);
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $formateurRepository->update($IdFormatMdf, $formateur);
 
                 echo "\nformateur modifier par succes\n";
@@ -524,7 +588,7 @@ function AddinsertInfo($userRepositiry)
         echo "\n   === Sittings ===\n";
         echo "\n1- ajouter un USER.\n";
         echo "2- supprimer un USER.\n";
-        echo "3- modifier un  USER\n";
+        echo "3- modier un  USER\n";
         echo "4- Liste des USERs\n";
         echo "5- quitter\n";
         echo "\n====>> : ";
@@ -543,14 +607,20 @@ function AddinsertInfo($userRepositiry)
                 $email = trim(fgets(STDIN));
                 echo "\n- Password  : ";
                 $password = trim(fgets(STDIN));
-
-                $userRepositiry->add($firstname, $lastname,  $email,  $password, "ADMIN");
+                echo "\n- Role  (ADMIN, FORMATEUR, ETUDIANT): ";
+                $role = trim(fgets(STDIN));
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
+                $userRepositiry->add($firstname, $lastname,  $email,  $password, $role);
                 echo "\n   !!! Admin ajouter par succes  !!!\n";
 
                 break;
             case 2:
                 echo "\n========== ADMIN SITTINGS ========";
-                echo "** suppimer un users : **\n";
+                echo "\n** suppimer un users : **\n";
                 echo "\n- liste des utilisateurs : ";
                 $arrays = $userRepositiry->selectAll();
                 foreach ($arrays as $aray) {
@@ -561,13 +631,18 @@ function AddinsertInfo($userRepositiry)
                 echo "\n=> choisir id de utilisateur";
                 echo "\n===>>> : ";
                 $idSuprm = trim(fgets(STDIN));
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $userRepositiry->delete($idSuprm);
                 echo "\n   !!! Admin ajouter par succes  !!!\n";
 
                 break;
             case 3:
                 echo "\n========== ADMIN SITTINGS ========";
-                echo "\n** Modifer un user : **";
+                echo "\n** Moder un user : **";
                 echo "\n-==> liste des users : ";
                 $arrays = $userRepositiry->selectAll();
                 foreach ($arrays as $aray) {
@@ -588,18 +663,24 @@ function AddinsertInfo($userRepositiry)
                 $password = trim(fgets(STDIN));
                 echo "\n- Role  : ";
                 $role = trim(fgets(STDIN));
-
+                echo "\n- Annuler [0] contenuer [1]";
+                $w = trim(fgets(STDIN));
+                if ($w == 0) {
+                    break;
+                }
                 $userRepositiry->update($idmdf, $firstname, $lastname, $email, $password,  $role);
 
 
-                echo "Departement modifier par succes\n";
+                echo "Departement modier par succes\n";
                 break;
             case 4:
                 echo "\n-==> liste des users : ";
                 $arrays = $userRepositiry->selectAll();
+                var_dump($arrays);
+                exit;
                 foreach ($arrays as $aray) {
                     echo "\n--------------------------------------------------------------\n";
-                    echo $aray['id'] . " | " . $aray['firstname'] . " | " . $aray['lasstname'] . " | " . $aray['email'] . " | " . $aray['firstname'] . ".";
+                    echo $aray['id'] . " | " . $aray['firstname'] . " | " . $aray['lasstname'] . " | " . $aray['email'] . " | " . $aray['role'] . ".";
                 }
                 echo "\n-------------------------";
                 break;

@@ -35,17 +35,6 @@ do {
     $password = trim(fgets(STDIN));
     $login = $userRepositiry->login($email, $password);
 
-    //     $array = $loginService->checkData($email);
-    //     $element = $array[0];
-    //      (empty($element)) {
-    //         echo "!!!!! verier votre email est incorrect   !!!!!\n";
-    //     }
-    // } while (empty($element));
-    //  ($password !== $element['password']) {
-    //     echo "!!!!!    votre password est  incorrect  !!!!\n";
-
-    // echo "\n";
-    // } while ($password !== $element['password']);
 } while (!$login);
 
 while (true) {
@@ -62,6 +51,7 @@ while (true) {
 
         $choix = trim(fgets(STDIN));
     } else {
+         if($login["role"] === "ETUDIANT") {
         echo "    ==** gestion des universités **==\n";
         echo "    1- consulter la liste des étudiants par département.\n";
         echo "    2- consulter les cours suivis par un étudian.\n";
@@ -71,7 +61,7 @@ while (true) {
         echo "\n====>> : ";
 
         $etudChoix = trim(fgets(STDIN));
-    }
+    }}
 
     switch ($choix) {
         case 1:

@@ -71,39 +71,52 @@ class User_Repository
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getEtudiantsByDepartment(): array
+    public function getCouresByDepartment(int $id): array
     {
         $sql = "
         SELECT 
-            d.name AS department,
-            e.firstname AS firstname,
-            e.lastname AS lastnale,
-            e.CNE AS CNE
-        FROM departments d
-        JOIN courses c ON c.department_id = d.id
-        JOIN etudiant_course ec ON ec.course_id = c.id
-        JOIN etudiants e ON e.id = ec.etudiant_id
-        ORDER BY d.name, e.lastname
-    ";
+            C.*
+        FROM courses c
+        JOIN departments d ON d.id = c.department
+        WHERE d.id= ?";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([$id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getCoursesByEtudiant(int $etudiantId): array
+    public function getCouresByFormateur(int $ID): array
     {
         $sql = "
         SELECT 
-            c.titre AS course,
-            d.name AS department
+           c.*,
+           firstname,
+           lastname
+        FROM formateur_course fc
+        JOIN courses c ON c.id = fc.course_id
+        JOIN formateur f ON f.id = fc.formateur_id
+        JOIN users u ON u.id=f.id
+        WHERE f.id = ? ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$ID]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function selectEtudiantByDepartment(int $ID): array
+    {
+        $sql = "
+        SELECT 
+           u.*,
+           e.*
         FROM etudiant_course ec
+        JOIN etudiants e ON e.id = ec.etudiant_id
         JOIN courses c ON c.id = ec.course_id
-        JOIN departments d ON d.id = c.department_id
-        WHERE ec.etudiant_id = :id
-    ";
+        JOIN departments d ON d.id = c.department
+        JOIN users u ON u.id=e.id
+        WHERE d.id = ? ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $etudiantId]);
+        $stmt->execute([$ID]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }

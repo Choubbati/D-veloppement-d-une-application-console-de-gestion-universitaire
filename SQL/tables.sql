@@ -14,23 +14,15 @@ CREATE TABLE departments(
 
 CREATE TABLE etudiants (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(100),
-    lastname VARCHAR(100),
-    email VARCHAR(150),
-    password VARCHAR(255),
-    role VARCHAR(50),
     niveau VARCHAR(50),
-	CNE VARCHAR(100) NOT NULL 
+	CNE VARCHAR(100) NOT NULL ,
+    FOREIGN KEY (id) REFERENCES users(id)
 )ENGINE=INNODB; 
 
 CREATE TABLE formateurs(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL,
-    password VARCHAR(250) NOT NULL,
-    role ENUM('ADMIN','FORMATEUR','ETUDIANT'),
-    specialite VARCHAR(100)
+    specialite VARCHAR(100),
+    FOREIGN KEY (id) REFERENCES users(id)
 )ENGINE=INNODB; 
 
 CREATE TABLE courses(

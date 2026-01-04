@@ -3,7 +3,7 @@ require_once __DIR__ . '/../Entity/Department.php';
 require __DIR__ . '/../Interface/CrudInterface.php';
 require_once __DIR__ . '/../database/Connextion.php';
 
-class DepartmentRepository implements CrudInterface
+class DepartmentRepository 
 {
 
     private PDO $pdo;

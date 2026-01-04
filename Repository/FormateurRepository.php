@@ -14,53 +14,82 @@ class FormateurRepository
         $this->pdo = $pdo;
     }
 
-    public function Add(Formateur $f): bool
+    public function add(Formateur $f): bool
     {
+        $sqlF = "INSERT INTO users (firstname, lastname, email, password, role) VALUES (:fn, :ln, :email, :pwd, :role)";
+        $stmt = $this->pdo->prepare($sqlF);
 
-        $sql = "INSERT INTO formateurs (firstname, lastname, email, password, role, specialite)
-            VALUES (?, ?, ?, ?, ?, ?)";
+        $hashedPassword = password_hash($f->getPassword(), PASSWORD_DEFAULT);
 
-        $stmt = $this->pdo->prepare($sql);
-
-        return $stmt->execute([$f->getFirstName(), $f->getLastName(), $f->getEmail(), $f->getPassword(), $f->getRole()->value, $f->getSpecialite()]);
+        $stmt->execute([
+            'fn'     => $f->getFirstName(),
+            'ln'     => $f->getLastName(),
+            'email'  => $f->getEmail(),
+            'pwd'    => $hashedPassword,
+            'role'   => $f->getRole()->value
+        ]);
+        $lastID=$this->pdo->lastInsertId();
+        $sql = "INSERT INTO formateur (id, specialite) VALUES (?, ?)";
+        $stmtF = $this->pdo->prepare($sql);
+       return $stmtF->execute([$lastID, $f->getSpecialite()]);
+        
     }
-
 
     public function delete(int $id): bool
     {
 
-        $sql = "DELETE FROM formateurs WHERE id = ?";
+        $sqlF = "DELETE FROM formateur WHERE id = ?";
+        $stmt = $this->pdo->prepare($sqlF);
+        $stmt->execute([$id]);
+        $sql = "DELETE FROM users WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
-
         return $stmt->execute([$id]);
     }
 
     public function update(int $id, Formateur $formateur): bool
     {
 
-        $sql = "UPDATE formateurs SET firstname = :firstname,
+        $sql = "UPDATE users SET 
+                    firstname = :firstname,
                     lastname = :lastname,
                     email = :email,
-                    specialite = :specialite
+                    password  =  :pwd
                 WHERE id = :id";
 
         $stmt = $this->pdo->prepare($sql);
 
-        return $stmt->execute([
+        $hashedPassword = password_hash($formateur->getPassword(), PASSWORD_DEFAULT);
+
+        $stmt->execute([
             'firstname'  => $formateur->getFirstname(),
             'lastname'   => $formateur->getLastname(),
             'email'      => $formateur->getEmail(),
-            'specialite' => $formateur->getSpecialite(),
-            'id'         => $id
+            'pwd'         => $hashedPassword,
+            'id'     => $id
+
         ]);
+         $sqlF = "UPDATE formateur SET 
+                   specialite = :specialite
+                   WHERE id = :id";
+        $stmtF=$this->pdo->prepare($sqlF);
+        return $stmtF->execute(['id'=>$id,'specialite'=>$formateur->getSpecialite()]);
+
     }
+
     public function selectAll(): array
     {
-        $sql = "SELECT * FROM formateurs ";
+        $sql = "SELECT  
+            firstname ,
+            lastname,
+            email,
+            f.* 
+         FROM users u 
+        INNER JOIN formateur f ON u.id=f.id ";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public function selectById($id): ?Formateur
     {
         $sql = "SELECT * FROM formateurs WHERE id=?";

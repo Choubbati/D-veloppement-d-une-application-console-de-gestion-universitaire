@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../database/connextion.php';
 require_once __DIR__ . '/../Entity/Course.php';
 
-class CourseRepository implements CrudInterface
+class CourseRepository 
 {
     private PDO $pdo;
 
@@ -50,7 +50,9 @@ class CourseRepository implements CrudInterface
         SELECT * 
         FROM courses c
         INNER JOIN formateur_course fc ON c.id = fc.course_id
-        INNER JOIN formateurs f ON fc.formateur_id = f.id ";
+        INNER JOIN formateur f ON fc.formateur_id = f.id 
+        INNER JOIN users u ON u.id=f.id
+        INNER JOIN departments d ON d.id=c.department";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
